@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "MyProjectileBase.generated.h"
 
+class USoundCue;
 class UProjectileMovementComponent;
 class USphereComponent;
 
@@ -18,6 +19,17 @@ public:
 	AMyProjectileBase();
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Effects|Shake")
+		TSubclassOf<UCameraShakeBase>ImpactShake;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects|Shake")
+		float ImpactShakeInnerRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects|Shake")
+		float ImpactShakeOuterRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		USoundCue* ImpactSound;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		UParticleSystemComponent* EffectComp;
@@ -35,6 +47,14 @@ protected:
 		UAudioComponent* AudioComp;
 
 
-public:	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+		void ProjectileExplode();
 
+	UFUNCTION()
+	void OnProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& HitResult);
+
+	virtual void PostInitializeComponents() override;
+
+public:	
+	virtual void BeginPlay() override;
 };

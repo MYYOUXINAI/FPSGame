@@ -94,8 +94,24 @@ void AMyCharacter_RuiSi::PrimaryAttack()
 
 void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
 {
+
+
+
 	if(ensure(PrimaryAttackProjectileClass))
 	{
+		/*
+		 *spawn projectile by bone rotator
+		 *FRotator BoneRotator = GetMesh()->GetSocketRotation("gun_barrel");
+		BoneRotator.Yaw += 90.f;
+		FVector StartLocation = GetMesh()->GetSocketLocation(PrimaryAttackSocketName);
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+		SpawnParams.Instigator = this;
+
+		GetWorld()->SpawnActor<AActor>(PrimaryAttackProjectileClass, StartLocation, BoneRotator, SpawnParams);*/
+
 		FVector StartLocation = GetMesh()->GetSocketLocation(PrimaryAttackSocketName);
 		FRotator SpawnActorRotator;
 
