@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "MyAttributeComponent.h"
+#include "MyPlayerInterfaceComponent.h"
 
 
 AMyCharacter_RuiSi::AMyCharacter_RuiSi()
@@ -22,6 +23,8 @@ AMyCharacter_RuiSi::AMyCharacter_RuiSi()
 	bUseControllerRotationYaw = false;
 
 	AttributeComp = CreateDefaultSubobject<UMyAttributeComponent>("AttributeComp");
+
+	InterfaceComp = CreateDefaultSubobject<UMyPlayerInterfaceComponent>("InterfaceComp");
 
 	PrimaryAttackSocketName = "Muzzle_01";
 	PrimaryAttackDelay = 0.26f;
@@ -99,19 +102,6 @@ void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
 
 	if(ensure(PrimaryAttackProjectileClass))
 	{
-		/*
-		 *spawn projectile by bone rotator
-		 *FRotator BoneRotator = GetMesh()->GetSocketRotation("gun_barrel");
-		BoneRotator.Yaw += 90.f;
-		FVector StartLocation = GetMesh()->GetSocketLocation(PrimaryAttackSocketName);
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-		SpawnParams.Instigator = this;
-
-		GetWorld()->SpawnActor<AActor>(PrimaryAttackProjectileClass, StartLocation, BoneRotator, SpawnParams);*/
-
 		FVector StartLocation = GetMesh()->GetSocketLocation(PrimaryAttackSocketName);
 		FRotator SpawnActorRotator;
 

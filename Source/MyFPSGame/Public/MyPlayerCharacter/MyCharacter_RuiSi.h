@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "MyCharacter_RuiSi.generated.h"
 
+class UMyPlayerInterfaceComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UMyAttributeComponent;
@@ -29,6 +30,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyAttributeComponent* AttributeComp;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UMyPlayerInterfaceComponent* InterfaceComp;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Attack")
 		TSubclassOf<AActor>PrimaryAttackProjectileClass;
