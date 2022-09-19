@@ -97,9 +97,6 @@ void AMyCharacter_RuiSi::PrimaryAttack()
 
 void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
 {
-
-
-
 	if(ensure(PrimaryAttackProjectileClass))
 	{
 		FVector StartLocation = GetMesh()->GetSocketLocation(PrimaryAttackSocketName);

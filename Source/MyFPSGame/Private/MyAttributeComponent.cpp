@@ -3,6 +3,11 @@
 
 #include "MyAttributeComponent.h"
 
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+
+
 // Sets default values for this component's properties
 UMyAttributeComponent::UMyAttributeComponent()
 {
@@ -13,6 +18,10 @@ UMyAttributeComponent::UMyAttributeComponent()
 
 	MaxMagicPoint = 200.f;
 	CurrentMagicPoint = MaxMagicPoint;
+
+	bIsHit = false;
+	HitAngle = 0.0f;
+	HitDelay = 0.85;
 }
 
 UMyAttributeComponent* UMyAttributeComponent::GetAttributes(AActor* InstigatorActor)
@@ -57,3 +66,27 @@ bool UMyAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Dam
 }
 
 
+void UMyAttributeComponent::MyHitReact(const FVector HitLocation)
+{
+	const ACharacter* MyCharacter = Cast<ACharacter>(GetOwner());
+	if(ensure(MyCharacter))
+	{
+		MyCharacter->GetCharacterMovement()->StopMovementImmediately();
+		bIsHit = true;
+		FTimerHandle TimerHandleDelay;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandleDelay, this, &UMyAttributeComponent::MyRecoveryFromHit, HitDelay);
+
+		/* Get HitAngle */
+		{
+			FVector ActorLocation = FVector(MyCharacter->GetActorLocation().X, MyCharacter->GetActorLocation().Y, HitLocation.Z);
+			FRotator rotator = UKismetMathLibrary::FindLookAtRotation(HitLocation, ActorLocation);
+			float temp;
+			UKismetMathLibrary::BreakRotator(rotator, temp, temp, HitAngle);
+		}
+	}
+}
+
+void UMyAttributeComponent::MyRecoveryFromHit()
+{
+	bIsHit = false;
+}

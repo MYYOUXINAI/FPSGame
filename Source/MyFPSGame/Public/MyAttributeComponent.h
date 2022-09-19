@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "MyAttributeComponent.generated.h"
 
-//class UMyAttributeComponent;
+class UMyAttributeComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UMyAttributeComponent*, OwningComp, float, NewValue, float, Delta);
 
 
@@ -20,6 +20,7 @@ public:
 		float SprintDeltaSpeed;
 
 protected:
+	//Attribute and data
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		float MaxHealth;
 
@@ -31,6 +32,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		float CurrentMagicPoint;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HitReact")
+		bool bIsHit;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HitReact")
+		float HitAngle;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HitReact")
+		float HitDelay;
+
+
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Attributes")
@@ -47,6 +59,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 		bool ApplyHealthChange(AActor* InstigatorActor, float DamageValue);
 
+	UFUNCTION(BlueprintCallable, Category = "MyHitReact")
+		void MyRecoveryFromHit();
 
+	UFUNCTION(BlueprintCallable, Category = "MyHitReact")
+		void MyHitReact(const FVector HitLocation);
 };
 

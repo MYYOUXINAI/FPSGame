@@ -3,27 +3,27 @@
 
 #include "MyAttackTraceAnimNotify.h"
 #include "MyAttributeComponent.h"
+#include "MyBlueprintFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 UMyAttackTraceAnimNotify::UMyAttackTraceAnimNotify()
 {
 	DamageValue = -50;
+	TraceRadius = 10.0f;
+	EmitterScale = FVector(1.0, 1.0, 1.0);
 }
 
 
 void UMyAttackTraceAnimNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
-                                           float TotalDuration)
+	float TotalDuration)
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration);
 
 	Player = MeshComp->GetOwner();
-	
+
 	if (Player)
 	{
-		for (const FName SocketName : SocketNames)
-		{
-			LastLocations.Add(MeshComp->GetSocketLocation(SocketName));
-		}
 		ActorsToIgnore.Add(Player);
 	}
 }
@@ -35,24 +35,31 @@ void UMyAttackTraceAnimNotify::NotifyTick(USkeletalMeshComponent* MeshComp, UAni
 
 	if (Player)
 	{
-		
-		for (int32 i = 0; i < LastLocations.Num(); ++i)
+		for (int32 i = 0; i < SocketNames.Num() / 2; ++i)
 		{
-			UKismetSystemLibrary::BoxTraceMulti(MeshComp->GetWorld(), LastLocations[i], MeshComp->GetSocketLocation(SocketNames[i]), FVector(5, 40, 20), MeshComp->GetSocketRotation(SocketNames[i]), TraceType, false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame, HitResults, true);
-			for(int32 j=0;j<HitResults.Num();++j)
+			UKismetSystemLibrary::SphereTraceMulti(MeshComp->GetWorld(), MeshComp->GetSocketLocation(SocketNames[2 * i]), MeshComp->GetSocketLocation(SocketNames[2 * i + 1]), TraceRadius, TraceType, false, ActorsToIgnore, EDrawDebugTrace::None, HitResults, true);
+			for (int32 j = 0; j < HitResults.Num(); ++j)
 			{
 				AActor* HitActor = HitResults[j].GetActor();
-				if(!HitActors.Contains(HitActor))
+				if (!HitActors.Contains(HitActor))
 				{
+					/* add attack emitter effect */
+					{
+						if(ensure(EmitterType))
+						{
+							UGameplayStatics::SpawnEmitterAtLocation(MeshComp->GetWorld(), EmitterType, HitResults[j].ImpactPoint, FRotator::ZeroRotator, EmitterScale, true);
+						}
+					}
+
 					HitActors.Add(HitActor);
 					UMyAttributeComponent* AttributeComponent = UMyAttributeComponent::GetAttributes(HitActor);
-					if(AttributeComponent)
+					if (AttributeComponent)
 					{
-						AttributeComponent->ApplyHealthChange(MeshComp->GetOwner(), DamageValue);
+						AttributeComponent->MyHitReact(HitResults[j].ImpactPoint);
+						UMyBlueprintFunctionLibrary::ApplyDirectionalDamage(MeshComp->GetOwner(), HitActor, DamageValue, HitResults[j]);
 					}
 				}
 			}
-			LastLocations[i] = MeshComp->GetSocketLocation(SocketNames[i]);
 		}
 	}
 }
@@ -66,7 +73,6 @@ void UMyAttackTraceAnimNotify::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnim
 	{
 		HitResults.Empty();
 		HitActors.Empty();
-		LastLocations.Empty();
 		ActorsToIgnore.Empty();
 	}
 }

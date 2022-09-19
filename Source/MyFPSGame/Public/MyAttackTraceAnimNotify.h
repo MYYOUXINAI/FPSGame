@@ -23,8 +23,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "AttackTrace")
 		TArray<AActor*>HitActors;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AttackTrace")
-		TArray<FVector>LastLocations;
 
 	UPROPERTY(EditDefaultsOnly, Category = "AttackTrace")
 		TArray<FName>SocketNames;
@@ -41,7 +39,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "AttackTrace")
 		float DamageValue;
 
+	UPROPERTY(EditDefaultsOnly,Category="AttackTrace")
+		float TraceRadius;
 
+	UPROPERTY(EditDefaultsOnly, Category = "AttackTrace")
+		UParticleSystem* EmitterType;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AttackTrace")
+		FVector EmitterScale;
 
 	/* override function */
 
