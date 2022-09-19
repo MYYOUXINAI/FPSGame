@@ -8,7 +8,11 @@ UMyAttributeComponent::UMyAttributeComponent()
 {
 	SprintDeltaSpeed = 600.f;
 
+	MaxHealth = 200.f;
+	CurrentHealth = MaxHealth;
 
+	MaxMagicPoint = 200.f;
+	CurrentMagicPoint = MaxMagicPoint;
 }
 
 UMyAttributeComponent* UMyAttributeComponent::GetAttributes(AActor* InstigatorActor)
@@ -22,6 +26,34 @@ UMyAttributeComponent* UMyAttributeComponent::GetAttributes(AActor* InstigatorAc
 		}
 	}
 	return nullptr;
+}
+
+bool UMyAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float DamageValue)
+{
+	if (!GetOwner()->CanBeDamaged() && DamageValue < 0.0f)	return false;
+
+	
+	float OldHealthValue = this->CurrentHealth;
+	float NewHealthValue = FMath::Clamp(CurrentHealth + DamageValue, 0.0f, MaxHealth);
+
+	float ActualDelta = NewHealthValue - OldHealthValue;
+
+	this->CurrentHealth = NewHealthValue;
+	if(ActualDelta!=0.0f)
+	{
+		OnHealthChanged.Broadcast(InstigatorActor, this, NewHealthValue, ActualDelta);
+	}
+
+	//die
+	if(ActualDelta<0.0f && CurrentHealth==0.0f)
+	{
+
+		//add event call in there
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Has Died!"), true);
+	}
+
+
+	return ActualDelta != 0;
 }
 
 

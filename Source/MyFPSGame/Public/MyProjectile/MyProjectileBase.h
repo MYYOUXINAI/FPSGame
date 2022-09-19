@@ -47,11 +47,15 @@ protected:
 		UAudioComponent* AudioComp;
 
 
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+		float DamageValue;
+
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 		void ProjectileExplode();
 
 	UFUNCTION()
-	void OnProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& HitResult);
+	virtual void OnProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& HitResult);
 
 	virtual void PostInitializeComponents() override;
 

@@ -35,6 +35,8 @@ AMyProjectileBase::AMyProjectileBase()
 	Movement->ProjectileGravityScale = 0.f;
 	Movement->InitialSpeed = 8000.f;
 
+
+	DamageValue = -20.f;
 }
 
 void AMyProjectileBase::ProjectileExplode_Implementation()
@@ -49,6 +51,8 @@ void AMyProjectileBase::ProjectileExplode_Implementation()
 			UGameplayStatics::PlayWorldCameraShake(this, ImpactShake, this->GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
 		Destroy();
 	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("test hit times!"), true);
 }
 
 
