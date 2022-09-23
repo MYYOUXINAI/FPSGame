@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "MyCharacter_RuiSi.generated.h"
 
+class UMyShootHelpLightComponent;
 class UMyPlayerInterfaceComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -34,11 +35,15 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyPlayerInterfaceComponent* InterfaceComp;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UMyShootHelpLightComponent* ShootHelpLightComp;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Attack")
 		TSubclassOf<AActor>PrimaryAttackProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly="Attack")
 		FName PrimaryAttackSocketName;
+
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly="Attack")
 		UAnimMontage* PrimaryAttackAnimMontage;

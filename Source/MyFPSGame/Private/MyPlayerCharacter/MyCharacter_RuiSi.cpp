@@ -2,12 +2,13 @@
 
 
 #include "MyPlayerCharacter/MyCharacter_RuiSi.h"
-
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "MyAttributeComponent.h"
 #include "MyPlayerInterfaceComponent.h"
+#include "MyShootHelpLightComponent.h"
+#include "Particles/ParticleSystem.h"
 
 
 AMyCharacter_RuiSi::AMyCharacter_RuiSi()
@@ -19,12 +20,16 @@ AMyCharacter_RuiSi::AMyCharacter_RuiSi()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
 
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 
 	AttributeComp = CreateDefaultSubobject<UMyAttributeComponent>("AttributeComp");
 
 	InterfaceComp = CreateDefaultSubobject<UMyPlayerInterfaceComponent>("InterfaceComp");
+
+	ShootHelpLightComp = CreateDefaultSubobject<UMyShootHelpLightComponent>("ShootHelpLightComp");
+	ShootHelpLightComp->IgnoreActors.Add(this);
 
 	PrimaryAttackSocketName = "Muzzle_01";
 	PrimaryAttackDelay = 0.26f;
@@ -49,7 +54,6 @@ void AMyCharacter_RuiSi::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AMyCharacter_RuiSi::PrimaryAttack);
 }
-
 
 
 
