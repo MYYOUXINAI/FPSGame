@@ -22,6 +22,9 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Trace")
+		FName EyeLocationName;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Trace")
 		FVector TargetLocation;
 

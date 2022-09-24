@@ -64,6 +64,8 @@ public:
 	void SprintEnd();
 
 
+	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
+
 	void PrimaryAttack();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

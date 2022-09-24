@@ -7,6 +7,7 @@
 #include "MyMinionLaneSuperCoreDawn.generated.h"
 
 
+class UPawnSensingComponent;
 class UMyAttributeComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -19,7 +20,7 @@ public:
 	AMyMinionLaneSuperCoreDawn();
 
 protected:
-	//component
+	//Component
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UCameraComponent* CameraComp;
 
@@ -29,13 +30,25 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyAttributeComponent* AttributeComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AttackAnim")
-		UAnimMontage* MinionAttackMontage;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Component")
+		UPawnSensingComponent* PawnSensingComp;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Blackboard")
+		FName TargetActorName;
+
+
+	//Function
+	UFUNCTION()
+		void MyOnPawnSeen(APawn* Pawn);
+
+	UFUNCTION()
+		AActor* GetTargetActor() const;
+
+	UFUNCTION()
+		void SetTargetActor(AActor* NewTargetActor) const;
 
 public:
-	UFUNCTION(BlueprintCallable,Category="MinionAttack")
-		void MinionAttack();
+	virtual void PostInitializeComponents() override;
 
 
 };

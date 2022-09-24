@@ -92,6 +92,13 @@ void AMyCharacter_RuiSi::SprintEnd()
 	GetCharacterMovement()->MaxWalkSpeed = NewSpeed;
 }
 
+void AMyCharacter_RuiSi::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const
+{
+	Super::GetActorEyesViewPoint(OutLocation, OutRotation);
+	OutLocation = CameraComp->GetComponentLocation();
+	OutRotation = CameraComp->GetComponentRotation();
+}
+
 void AMyCharacter_RuiSi::PrimaryAttack()
 {
 	if(ensure(PrimaryAttackAnimMontage))	PlayAnimMontage(PrimaryAttackAnimMontage);
