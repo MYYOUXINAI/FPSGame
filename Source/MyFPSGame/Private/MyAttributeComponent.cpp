@@ -29,7 +29,7 @@ UMyAttributeComponent* UMyAttributeComponent::GetAttributes(AActor* InstigatorAc
 	if(ensure(InstigatorActor))
 	{
 		UMyAttributeComponent* AttributeComp = Cast<UMyAttributeComponent>(InstigatorActor->GetComponentByClass(UMyAttributeComponent::StaticClass()));
-		if(ensure(AttributeComp))
+		if(AttributeComp)
 		{
 			return AttributeComp;
 		}

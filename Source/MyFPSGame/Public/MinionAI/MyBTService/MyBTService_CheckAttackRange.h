@@ -16,10 +16,14 @@ class MYFPSGAME_API UMyBTService_CheckAttackRange : public UBTService
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
-		FBlackboardKeySelector AttackRangeKeyName;
+		FBlackboardKeySelector AttackRangeKey;
 
 	UPROPERTY(EditAnywhere, Category = "AI")
 		float MaxAttackRange;
+
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+		FBlackboardKeySelector TargetActorKey;
 
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 

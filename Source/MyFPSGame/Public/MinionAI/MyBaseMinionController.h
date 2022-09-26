@@ -15,11 +15,19 @@ class MYFPSGAME_API AMyBaseMinionController : public AAIController
 	GENERATED_BODY()
 
 protected:
+
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "BlackboardData")
+		FName LocationIndexName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "BlackboardData")
+		FName bNotHasArrivedEndLocationName;
+
 	UPROPERTY(EditDefaultsOnly,Category="MinionAI")
 		UBehaviorTree* BehaviorTree;
 
 public:
 
 	virtual void BeginPlay() override;
-	
 };

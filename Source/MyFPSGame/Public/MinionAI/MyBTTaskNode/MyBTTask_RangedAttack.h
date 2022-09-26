@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(ClassGroup=(Custom))
+UCLASS()
 class MYFPSGAME_API UMyBTTask_RangedAttack : public UBTTaskNode
 {
 	GENERATED_BODY()
