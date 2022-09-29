@@ -7,6 +7,7 @@
 #include "MyMinionLaneSuperCoreDawn.generated.h"
 
 
+class UMyUserWidget;
 class UPawnSensingComponent;
 class UMyAttributeComponent;
 class USpringArmComponent;
@@ -36,6 +37,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Blackboard")
 		FName TargetActorName;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HealthBarUI")
+		UMyUserWidget* ActiveHealthBar;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HealthBarUI")
+		TSubclassOf<UUserWidget>HealthBarWidgetClass;
 
 	//Function
 	UFUNCTION()
@@ -47,8 +53,12 @@ protected:
 	UFUNCTION()
 		void SetTargetActor(AActor* NewTargetActor) const;
 
+	UFUNCTION()
+		void OnHealthChanged(AActor* InstigatorActor, UMyAttributeComponent* OwningComp, float NewHealth, float Delta);
+
 public:
 	virtual void PostInitializeComponents() override;
 
 
 };
+

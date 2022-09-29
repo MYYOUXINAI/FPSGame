@@ -10,7 +10,7 @@ bool UMyBlueprintFunctionLibrary::ApplyDamage(AActor* DamageCauser, AActor* Targ
 	UMyAttributeComponent* AttributeComp = UMyAttributeComponent::GetAttributes(TargetActor);
 	if(AttributeComp)
 	{
-		return AttributeComp->ApplyHealthChange(TargetActor, DamageAmount);
+		return AttributeComp->ApplyHealthChange(DamageCauser, DamageAmount);
 	}
 	return false;
 }

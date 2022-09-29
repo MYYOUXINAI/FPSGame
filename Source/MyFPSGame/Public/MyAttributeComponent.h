@@ -7,7 +7,7 @@
 #include "MyAttributeComponent.generated.h"
 
 class UMyAttributeComponent;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UMyAttributeComponent*, OwningComp, float, NewValue, float, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UMyAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -64,5 +64,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "MyHitReact")
 		void MyHitReact(const FVector HitLocation);
+
+	UFUNCTION(BlueprintCallable, Category = "CheckState")
+		bool IsAlive()const;
 };
 

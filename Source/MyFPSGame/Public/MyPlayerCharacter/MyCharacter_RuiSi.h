@@ -55,6 +55,9 @@ protected:
 	//function
 	void PrimaryAttackDelay_Elapsed();
 
+	UFUNCTION()
+		void OnHealthChange(AActor* InstigatorActor, UMyAttributeComponent* OwningComp, float NewHealth, float Delta);
+
 public:
 
 	//Action & Axis
@@ -68,5 +71,8 @@ public:
 
 	void PrimaryAttack();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+	virtual void PostInitializeComponents() override;
 
 };

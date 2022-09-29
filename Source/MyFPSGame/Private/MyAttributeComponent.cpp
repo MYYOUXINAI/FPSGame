@@ -3,6 +3,7 @@
 
 #include "MyAttributeComponent.h"
 
+#include "MyGameModeBase.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -54,11 +55,15 @@ bool UMyAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Dam
 	}
 
 	//die
-	if(ActualDelta<0.0f && CurrentHealth==0.0f)
+	if (ActualDelta < 0.0f && CurrentHealth == 0.0f)
 	{
-
-		//add event call in there
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Has Died!"), true);
+		
+		AMyGameModeBase* GM = GetWorld()->GetAuthGameMode<AMyGameModeBase>();
+		if(GM)
+		{
+			GM->OnActorKilled(this->GetOwner(), InstigatorActor);
+		}
 	}
 
 
@@ -84,6 +89,11 @@ void UMyAttributeComponent::MyHitReact(const FVector HitLocation)
 			UKismetMathLibrary::BreakRotator(rotator, temp, temp, HitAngle);
 		}
 	}
+}
+
+bool UMyAttributeComponent::IsAlive() const
+{
+	return this->CurrentHealth > 0.0f;
 }
 
 void UMyAttributeComponent::MyRecoveryFromHit()

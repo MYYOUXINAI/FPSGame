@@ -18,7 +18,9 @@ UMyShootHelpLightComponent::UMyShootHelpLightComponent()
 	Radius = 5.0f;
 	bHasFindLocation = false;
 
-	EyeLocationName = "Eyes_Position";
+	//EyeLocationName = "Eyes_Position";
+	EyeLocationName = "Muzzle_01";
+	
 }
 
 

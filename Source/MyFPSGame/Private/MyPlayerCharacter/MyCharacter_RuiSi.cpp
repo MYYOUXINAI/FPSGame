@@ -55,6 +55,12 @@ void AMyCharacter_RuiSi::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AMyCharacter_RuiSi::PrimaryAttack);
 }
 
+void AMyCharacter_RuiSi::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AttributeComp->OnHealthChanged.AddDynamic(this, &AMyCharacter_RuiSi::OnHealthChange);
+}
 
 
 void AMyCharacter_RuiSi::MoveForward(float Value)
@@ -119,7 +125,7 @@ void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
 		SpawnParams.Instigator = this;
 
 		FCollisionShape Shape;
-		Shape.SetSphere(20.f);
+		Shape.SetSphere(3.0f);
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(this);
@@ -130,7 +136,9 @@ void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
 		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
 
 		FVector QueryStartLocation = GetPawnViewLocation();
+
 		FVector QueryEndLocation = QueryStartLocation + GetControlRotation().Vector() * 5000.f;
+		//FVector QueryEndLocation = CameraComp->GetComponentLocation() + CameraComp->GetComponentRotation().Vector() * 5000.f;
 
 		FHitResult Hit;
 		if(GetWorld()->SweepSingleByObjectType(Hit,QueryStartLocation,QueryEndLocation,FQuat::Identity,ObjectQueryParams,Shape,QueryParams))
@@ -144,42 +152,25 @@ void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
 	}
 }
 
-/*
- FVector HandLocation = InstigatorCharacter->GetMesh()->GetSocketLocation(HandSocketName);
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		SpawnParams.Instigator = InstigatorCharacter;
-
-		FCollisionShape Shape;
-		Shape.SetSphere(20.0f);
-
-		// Ignore Player
-		FCollisionQueryParams Params;
-		Params.AddIgnoredActor(InstigatorCharacter);
-
-		FCollisionObjectQueryParams ObjParams;
-		ObjParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-		ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
-		ObjParams.AddObjectTypesToQuery(ECC_Pawn);
-
-		FVector TraceStart = InstigatorCharacter->GetPawnViewLocation();
-
-		// endpoint far into the look-at distance (not too far, still adjust somewhat towards crosshair on a miss)
-		FVector TraceEnd = TraceStart + (InstigatorCharacter->GetControlRotation().Vector() * 5000);
-
-		FHitResult Hit;
-		// returns true if we got to a blocking hit
-		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
+void AMyCharacter_RuiSi::OnHealthChange(AActor* InstigatorActor, UMyAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	if(Delta<0.0f)
+	{
+		/* fix it when add hit flash effect */
 		{
-			// Overwrite trace end with impact point in world
-			TraceEnd = Hit.ImpactPoint;
+			
 		}
 
-		// find new direction/rotation from Hand pointing to impact point in world.
-		FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
 
-		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
-		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
- *
- */
+		if(NewHealth<=0.0f)
+		{
+			APlayerController* PC = Cast<APlayerController>(GetController());
+			if(PC)
+			{
+				DisableInput(PC);
+				SetLifeSpan(3.0f);
+			}
+		}
+	}
+}
