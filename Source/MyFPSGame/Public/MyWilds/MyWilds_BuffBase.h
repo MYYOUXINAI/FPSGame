@@ -6,24 +6,59 @@
 #include "GameFramework/Character.h"
 #include "MyWilds_BuffBase.generated.h"
 
+class UMyUserWidget;
+class UPawnSensingComponent;
+class UMyAttributeComponent;
+class USpringArmComponent;
+class UCameraComponent;
 UCLASS()
 class MYFPSGAME_API AMyWilds_BuffBase : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+
 	AMyWilds_BuffBase();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	//Component
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UCameraComponent* CameraComp;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		USpringArmComponent* SpringArmComp;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UMyAttributeComponent* AttributeComp;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Component")
+		UPawnSensingComponent* PawnSensingComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Blackboard")
+		FName TargetActorName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HealthBarUI")
+		UMyUserWidget* ActiveHealthBar;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HealthBarUI")
+		TSubclassOf<UUserWidget>HealthBarWidgetClass;
+
+	//Function
+	UFUNCTION()
+		void MyOnPawnSeen(APawn* Pawn);
+
+	UFUNCTION()
+		AActor* GetTargetActor() const;
+
+	UFUNCTION()
+		void SetTargetActor(AActor* NewTargetActor) const;
+
+	UFUNCTION()
+		void OnHealthChanged(AActor* InstigatorActor, UMyAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+public:
+	virtual void PostInitializeComponents() override;
+
+
 
 };

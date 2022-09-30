@@ -15,15 +15,7 @@ class MYFPSGAME_API AMyMagicProjectile : public AMyProjectileBase
 	GENERATED_BODY()
 
 protected:
-	//UFUNCTION()
-	//void OnMagicProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& HitResult);
-
-	//virtual void PostInitializeComponents() override;
-
-
 	virtual void OnProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& HitResult) override;
-
-
 
 public:
 	AMyMagicProjectile();
