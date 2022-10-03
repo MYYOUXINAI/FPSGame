@@ -9,7 +9,7 @@ void AMyBaseMinionController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(ensureMsgf(BehaviorTree,TEXT("Behavior Tree is nullptr! Please assign BehaviorTree in your AI Controller!" )))
+	if(ensureMsgf(BehaviorTree,TEXT("Behavior Tree is nullptr! Please assign BehaviorTree in your Minions AI Controller!" )))
 	{
 		RunBehaviorTree(BehaviorTree);
 		UBlackboardComponent* BlackboardComp = this->GetBlackboardComponent();

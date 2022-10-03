@@ -84,7 +84,7 @@ void UMyAttributeComponent::MyHitReact(const FVector HitLocation)
 		/* Get HitAngle */
 		{
 			FVector ActorLocation = FVector(MyCharacter->GetActorLocation().X, MyCharacter->GetActorLocation().Y, HitLocation.Z);
-			FRotator rotator = UKismetMathLibrary::FindLookAtRotation(HitLocation, ActorLocation);
+			FRotator rotator = UKismetMathLibrary::FindLookAtRotation(ActorLocation, HitLocation);
 			float temp;
 			UKismetMathLibrary::BreakRotator(rotator, temp, temp, HitAngle);
 		}
