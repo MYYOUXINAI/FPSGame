@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyAnimation")
 		AMyTurretBase* OwningActor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyAnimation")
+		float RotateDelta;
+
 
 public:
 
@@ -58,5 +61,7 @@ public:
 	virtual void NativeBeginPlay() override;
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	void FocusToTargetActorSmooth(float Delta, float NewYaw);
 	
 };

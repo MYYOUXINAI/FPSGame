@@ -1,18 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyProjectile/MyMagicProjectile.h"
+#include "MyProjectile/MyTurretsProjectile.h"
+
 #include "MyBlueprintFunctionLibrary.h"
-#include "Components/SphereComponent.h"
 
 
-AMyMagicProjectile::AMyMagicProjectile()
+AMyTurretsProjectile::AMyTurretsProjectile()
 {
-	this->DamageValue = -50;
+	this->DamageValue = -100;
 }
 
 
-void AMyMagicProjectile::OnProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor,
+void AMyTurretsProjectile::OnProjectileHit(UPrimitiveComponent* PrimitiveComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& HitResult)
 {
 	if (OtherActor && OtherActor != GetInstigator())
@@ -24,4 +24,3 @@ void AMyMagicProjectile::OnProjectileHit(UPrimitiveComponent* PrimitiveComponent
 		ProjectileExplode();
 	}
 }
-

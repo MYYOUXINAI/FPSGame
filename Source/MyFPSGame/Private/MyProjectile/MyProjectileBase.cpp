@@ -51,8 +51,7 @@ void AMyProjectileBase::ProjectileExplode_Implementation()
 			UGameplayStatics::PlayWorldCameraShake(this, ImpactShake, this->GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
 		Destroy();
 	}
-
-	////GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("test hit times!"), true);
+	
 }
 
 
@@ -73,9 +72,8 @@ void AMyProjectileBase::PostInitializeComponents()
 void AMyProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
+
 	SetLifeSpan(10.0);
-
-
 }
 
 

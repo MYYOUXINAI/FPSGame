@@ -9,6 +9,7 @@ void UMyTurretsBaseAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
+	RotateDelta = 2.0f;
 }
 
 void UMyTurretsBaseAnimInstance::NativeBeginPlay()
@@ -17,27 +18,60 @@ void UMyTurretsBaseAnimInstance::NativeBeginPlay()
 
 	OwningActor = Cast<AMyTurretBase>(GetOwningActor());
 	ensure(OwningActor);
-
-	if(false)
-	{
-		OpenPanel = true;
-		Aiming = true;
-		OpenShield = true;
-		isFiring = true;
-		TurretDamage = 1.0f;
-	}
 }
 
 void UMyTurretsBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	if (OwningActor)	Yaw = OwningActor->GetYaw();
+	float NewYaw = 0.0f;
 
-	Yaw += 45;
+	if (OwningActor)	NewYaw = OwningActor->GetYaw();
+
+	NewYaw += 45;
+	if(NewYaw>180)
+	{
+		NewYaw -= 360;
+	}
+
+	FocusToTargetActorSmooth(RotateDelta, NewYaw);
+
+}
+
+void UMyTurretsBaseAnimInstance::FocusToTargetActorSmooth(float Delta, float NewYaw)
+{
+	const int dis = fabs(NewYaw - Yaw);
+
+	if(dis<=Delta)
+	{
+		Yaw = NewYaw;
+		return;
+	}
+
+	const bool bFlag = dis > 180;
+	if(bFlag)
+	{
+		if(NewYaw>Yaw)
+		{
+			Delta *= -1;
+		}
+		Yaw += Delta;
+	}
+	else
+	{
+		if(NewYaw<Yaw)
+		{
+			Delta *= -1;
+		}
+		Yaw += Delta;
+	}
+
 	if(Yaw>180)
 	{
 		Yaw -= 360;
 	}
-
+	if(Yaw<-180)
+	{
+		Yaw += 360;
+	}
 }
