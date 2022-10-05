@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "DrawDebugHelpers.h"
+#include "MyActionComponent.h"
 #include "MyAttributeComponent.h"
 #include "MyUserWidget.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -20,6 +21,8 @@ AMyTurretBase::AMyTurretBase()
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 
 	AttributeComp = CreateDefaultSubobject<UMyAttributeComponent>("AttributeComp");
+
+	ActionComp = CreateDefaultSubobject<UMyActionComponent>("ActionComp");
 
 	bUseControllerRotationYaw = false;
 

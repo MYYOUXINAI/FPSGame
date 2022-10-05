@@ -16,8 +16,6 @@ class MYFPSGAME_API AMyBaseMinionController : public AAIController
 
 protected:
 
-
-
 	UPROPERTY(EditDefaultsOnly, Category = "BlackboardData")
 		FName LocationIndexName;
 

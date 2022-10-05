@@ -14,7 +14,7 @@ UCLASS()
 class MYFPSGAME_API UMyTurretsBaseAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-
+		
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyAnimation")

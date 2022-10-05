@@ -7,6 +7,7 @@
 #include "MyMinionLaneSuperCoreDawn.generated.h"
 
 
+class UMyActionComponent;
 class UMyUserWidget;
 class UPawnSensingComponent;
 class UMyAttributeComponent;
@@ -30,6 +31,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyAttributeComponent* AttributeComp;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UMyActionComponent* ActionComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Component")
 		UPawnSensingComponent* PawnSensingComp;

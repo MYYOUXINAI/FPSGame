@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "MyWilds_BuffBase.generated.h"
 
+class UMyActionComponent;
 class UMyUserWidget;
 class UPawnSensingComponent;
 class UMyAttributeComponent;
@@ -30,6 +31,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyAttributeComponent* AttributeComp;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UMyActionComponent* ActionComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Component")
 		UPawnSensingComponent* PawnSensingComp;

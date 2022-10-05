@@ -4,22 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "MyActions/MyAction.h"
-#include "MyAction_ProjectileAttack.generated.h"
+#include "MyAction_TurretProjectileAttack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYFPSGAME_API UMyAction_ProjectileAttack : public UMyAction
+class MYFPSGAME_API UMyAction_TurretProjectileAttack : public UMyAction
 {
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Targeting")
-		float SweepRadius;
-
-	UPROPERTY(EditAnywhere, Category = "Targeting")
-		float SweepDistanceFallback;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 		TSubclassOf<AActor>ProjectileClass;
@@ -27,14 +22,17 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 		FName HandSocketName;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Effect")
+		UParticleSystem* CastingEffect;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 		float AttackAnimDelay;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 		float AttackInterval;
 
-	UPROPERTY(EditAnywhere, Category = "Attack")
-		UAnimMontage* AttackAnim;
+	UPROPERTY(EditDefaultsOnly, Category = "Targeting")
+		AActor* TargetActor;
 
 
 	UFUNCTION()
@@ -46,6 +44,8 @@ protected:
 public:
 	virtual void StartAction_Implementation(AActor* InstigatorActor) override;
 
-	UMyAction_ProjectileAttack();
+	UFUNCTION(BlueprintCallable)
+		void SetTargetActor(AActor* _TargetActor);
 
+	UMyAction_TurretProjectileAttack();
 };

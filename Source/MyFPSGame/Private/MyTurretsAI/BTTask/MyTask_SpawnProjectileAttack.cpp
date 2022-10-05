@@ -4,38 +4,32 @@
 #include "MyTurretsAI/BTTask/MyTask_SpawnProjectileAttack.h"
 
 #include "AIController.h"
+#include "MyActionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/Character.h"
+#include "MyActions/MyAction.h"
+#include "MyActions/MyAction_TurretProjectileAttack.h"
 
 
+class UMyActionComponent;
 
 EBTNodeResult::Type UMyTask_SpawnProjectileAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIController* AIC = OwnerComp.GetAIOwner();
-	if(ensure(AIC))
+	if (ensure(AIC))
 	{
 		ACharacter* OwningCharacter = Cast<ACharacter>(AIC->GetPawn());
-		if(ensure(OwningCharacter))
+		if (ensure(OwningCharacter))
 		{
-			if(ensureMsgf(ProjectileClass,TEXT("Please assign the Projectile in spawn projectile attack AI task!!")))
+			AActor* TargetActor = Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject(TargetActorKey.SelectedKeyName));
+			if(ensure(TargetActor))
 			{
-				FVector SocketLocation = OwningCharacter->GetMesh()->GetSocketLocation(SocketName);
-				AActor* TargetActor = Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject(TargetActorKey.SelectedKeyName));
-
-				if(ensure(TargetActor))
+				UMyAction_TurretProjectileAttack* _Action = Cast<UMyAction_TurretProjectileAttack>(UMyActionComponent::GetActionComponent(OwningCharacter)->GetActionByName("MyTurretsPrimaryAttack"));
+				if(ensure(_Action))
 				{
-					FVector TargetActorLocation = TargetActor->GetActorLocation();
-
-					FRotator SpawnActorRotator = FRotationMatrix::MakeFromX(TargetActorLocation - SocketLocation).Rotator();
-
-					FActorSpawnParameters SpawnParams;
-					SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-					SpawnParams.Instigator = OwningCharacter;
-
-					AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(ProjectileClass, SocketLocation, SpawnActorRotator, SpawnParams);
-
-					if (ProjectileActor)
+					_Action->SetTargetActor(TargetActor);
+					const bool bFlag = UMyActionComponent::GetActionComponent(OwningCharacter)->StartActionByName(OwningCharacter, "MyTurretsPrimaryAttack");
+					if(bFlag)
 					{
 						return EBTNodeResult::Succeeded;
 					}

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "MyTurretBase.generated.h"
 
+class UMyActionComponent;
 class UMyUserWidget;
 class UPawnSensingComponent;
 class UMyAttributeComponent;
@@ -22,8 +23,11 @@ public:
 
 protected:
 	//Component
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UMyAttributeComponent* AttributeComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UMyActionComponent* ActionComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Component")
 		UPawnSensingComponent* PawnSensingComp;

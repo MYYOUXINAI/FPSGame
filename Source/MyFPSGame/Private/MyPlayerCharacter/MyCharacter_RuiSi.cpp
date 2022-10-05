@@ -2,6 +2,8 @@
 
 
 #include "MyPlayerCharacter/MyCharacter_RuiSi.h"
+
+#include "MyActionComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -27,13 +29,13 @@ AMyCharacter_RuiSi::AMyCharacter_RuiSi()
 
 	AttributeComp = CreateDefaultSubobject<UMyAttributeComponent>("AttributeComp");
 
+	ActionComp = CreateDefaultSubobject<UMyActionComponent>("ActionComp");
+
 	InterfaceComp = CreateDefaultSubobject<UMyPlayerInterfaceComponent>("InterfaceComp");
 
 	ShootHelpLightComp = CreateDefaultSubobject<UMyShootHelpLightComponent>("ShootHelpLightComp");
 	ShootHelpLightComp->IgnoreActors.Add(this);
 
-	PrimaryAttackSocketName = "Muzzle_01";
-	PrimaryAttackDelay = 0.26f;
 }
 
 void AMyCharacter_RuiSi::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -108,50 +110,9 @@ void AMyCharacter_RuiSi::GetActorEyesViewPoint(FVector& OutLocation, FRotator& O
 
 void AMyCharacter_RuiSi::PrimaryAttack()
 {
-	if(ensure(PrimaryAttackAnimMontage))	PlayAnimMontage(PrimaryAttackAnimMontage);
-
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed, PrimaryAttackDelay);
+	ActionComp->StartActionByName(this, "MyPrimaryAttack");
 }
 
-void AMyCharacter_RuiSi::PrimaryAttackDelay_Elapsed()
-{
-	if(ensure(PrimaryAttackProjectileClass))
-	{
-		FVector StartLocation = GetMesh()->GetSocketLocation(PrimaryAttackSocketName);
-		FRotator SpawnActorRotator;
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-		
-		SpawnParams.Instigator = this;
-
-		FCollisionShape Shape;
-		Shape.SetSphere(3.0f);
-
-		FCollisionQueryParams QueryParams;
-		QueryParams.AddIgnoredActor(this);
-
-		FCollisionObjectQueryParams ObjectQueryParams;
-		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
-
-		FVector QueryStartLocation = GetPawnViewLocation();
-
-		FVector QueryEndLocation = QueryStartLocation + GetControlRotation().Vector() * 5000.f;
-		//FVector QueryEndLocation = CameraComp->GetComponentLocation() + CameraComp->GetComponentRotation().Vector() * 5000.f;
-
-		FHitResult Hit;
-		if(GetWorld()->SweepSingleByObjectType(Hit,QueryStartLocation,QueryEndLocation,FQuat::Identity,ObjectQueryParams,Shape,QueryParams))
-		{
-			QueryEndLocation = Hit.ImpactPoint;
-		}
-
-		SpawnActorRotator = FRotationMatrix::MakeFromX(QueryEndLocation-StartLocation).Rotator();
-		
-		GetWorld()->SpawnActor<AActor>(PrimaryAttackProjectileClass, StartLocation, SpawnActorRotator,SpawnParams);
-	}
-}
 
 void AMyCharacter_RuiSi::OnHealthChange(AActor* InstigatorActor, UMyAttributeComponent* OwningComp, float NewHealth,
 	float Delta)

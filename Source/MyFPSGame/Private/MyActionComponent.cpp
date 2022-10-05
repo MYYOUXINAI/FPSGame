@@ -65,6 +65,19 @@ UMyAction* UMyActionComponent::GetAction(TSubclassOf<UMyAction> ActionClass) con
 	return nullptr;
 }
 
+UMyAction* UMyActionComponent::GetActionByName(FName ActionName) const
+{
+	for(UMyAction* Action:Actions)
+	{
+		if(Action && Action->ActionName==ActionName)
+		{
+			return Action;
+		}
+	}
+
+	return nullptr;
+}
+
 bool UMyActionComponent::StartActionByName(AActor* InstigatorActor, FName ActionName)
 {
 	for(UMyAction* Action:Actions)
@@ -136,6 +149,19 @@ void UMyActionComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 
 	Super::EndPlay(EndPlayReason);
+}
+
+UMyActionComponent* UMyActionComponent::GetActionComponent(AActor* InstigatorActor)
+{
+	if(ensure(InstigatorActor))
+	{
+		UMyActionComponent* ActionComponent = Cast<UMyActionComponent>(InstigatorActor->GetComponentByClass(UMyActionComponent::StaticClass()));
+		if(ActionComponent)
+		{
+			return ActionComponent;
+		}
+	}
+	return nullptr;
 }
 
 bool UMyActionComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)

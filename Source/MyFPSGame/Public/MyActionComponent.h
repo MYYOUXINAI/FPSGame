@@ -36,6 +36,9 @@ public:
 		UMyAction* GetAction(TSubclassOf<UMyAction> ActionClass)const;
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
+		UMyAction* GetActionByName(FName ActionName)const;
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
 		bool StartActionByName(AActor* InstigatorActor, FName ActionName);
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
@@ -59,6 +62,8 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+		static UMyActionComponent* GetActionComponent(AActor* InstigatorActor);
 
 	UPROPERTY(BlueprintAssignable)
 		FOnActionStateChanged OnActionStarted;

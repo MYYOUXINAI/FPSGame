@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "MyCharacter_RuiSi.generated.h"
 
+class UMyActionComponent;
 class UMyShootHelpLightComponent;
 class UMyPlayerInterfaceComponent;
 class USpringArmComponent;
@@ -33,28 +34,15 @@ protected:
 		UMyAttributeComponent* AttributeComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+		UMyActionComponent* ActionComp;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyPlayerInterfaceComponent* InterfaceComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 		UMyShootHelpLightComponent* ShootHelpLightComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Attack")
-		TSubclassOf<AActor>PrimaryAttackProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Attack")
-		FName PrimaryAttackSocketName;
-
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly="Attack")
-		UAnimMontage* PrimaryAttackAnimMontage;
-
-	float PrimaryAttackDelay;
-
-	FTimerHandle TimerHandle_PrimaryAttack;
-
 	//function
-	void PrimaryAttackDelay_Elapsed();
-
 	UFUNCTION()
 		void OnHealthChange(AActor* InstigatorActor, UMyAttributeComponent* OwningComp, float NewHealth, float Delta);
 
@@ -65,7 +53,6 @@ public:
 	void MoveRight(float Value);
 	void SprintStart();
 	void SprintEnd();
-
 
 	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
 

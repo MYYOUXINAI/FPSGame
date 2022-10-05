@@ -15,8 +15,11 @@ class MYFPSGAME_API UMyBTTask_RangedAttack : public UBTTaskNode
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "AI")
-		UAnimMontage* PrimaryAttackMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Action")
+		FName ActionName;
+
+public:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
