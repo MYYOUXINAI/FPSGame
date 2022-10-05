@@ -8,6 +8,7 @@
 #include "MyAttributeComponent.h"
 #include "MyPlayerInterfaceComponent.h"
 #include "MyShootHelpLightComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 
 

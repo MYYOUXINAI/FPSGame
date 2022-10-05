@@ -4,6 +4,7 @@
 #include "MyAttributeComponent.h"
 
 #include "MyGameModeBase.h"
+#include "MyUserWidget.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -51,6 +52,13 @@ bool UMyAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Dam
 	this->CurrentHealth = NewHealthValue;
 	if(ActualDelta!=0.0f)
 	{
+		UMyUserWidget* DamagePopUI = CreateWidget<UMyUserWidget>(GetWorld(), DamagePopUIClass);
+		if(DamagePopUI)
+		{
+			DamagePopUI->AttachedActor = GetOwner();
+			DamagePopUI->AddToViewport();
+		}
+
 		OnHealthChanged.Broadcast(InstigatorActor, this, NewHealthValue, ActualDelta);
 	}
 

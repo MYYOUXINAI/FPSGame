@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HitReact")
 		float HitDelay;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DamagePopUI")
+		TSubclassOf<UUserWidget> DamagePopUIClass;
+
 
 
 public:

@@ -41,7 +41,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Attack")
 		TSubclassOf<AActor>PrimaryAttackProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly="Attack")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category="Attack")
 		FName PrimaryAttackSocketName;
 
 
