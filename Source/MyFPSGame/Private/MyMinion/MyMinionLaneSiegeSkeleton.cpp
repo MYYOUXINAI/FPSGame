@@ -1,4 +1,5 @@
-#include "MyMinion/MyMinionLaneSuperCoreDawn.h"
+#include "MyMinion/MyMinionLaneSiegeSkeleton.h"
+
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "DrawDebugHelpers.h"
@@ -14,8 +15,7 @@
 #include "Perception/PawnSensingComponent.h"
 
 
-
-AMyMinionLaneSuperCoreDawn::AMyMinionLaneSuperCoreDawn()
+AMyMinionLaneSiegeSkeleton::AMyMinionLaneSiegeSkeleton()
 {
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 
@@ -37,26 +37,16 @@ AMyMinionLaneSuperCoreDawn::AMyMinionLaneSuperCoreDawn()
 	TargetActorName = "TargetActor";
 }
 
-void AMyMinionLaneSuperCoreDawn::PostInitializeComponents()
+void AMyMinionLaneSiegeSkeleton::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	PawnSensingComp->OnSeePawn.AddDynamic(this, &AMyMinionLaneSuperCoreDawn::MyOnPawnSeen);
+	PawnSensingComp->OnSeePawn.AddDynamic(this, &AMyMinionLaneSiegeSkeleton::MyOnPawnSeen);
 
-	AttributeComp->OnHealthChanged.AddDynamic(this, &AMyMinionLaneSuperCoreDawn::OnHealthChanged);
-
+	AttributeComp->OnHealthChanged.AddDynamic(this, &AMyMinionLaneSiegeSkeleton::OnHealthChanged);
 }
 
-void AMyMinionLaneSuperCoreDawn::SetTargetActor(AActor* NewTargetActor) const
-{
-	AAIController* AIC = Cast<AAIController>(GetController());
-	if (ensure(AIC))
-	{
-		AIC->GetBlackboardComponent()->SetValueAsObject(TargetActorName, NewTargetActor);
-	}
-}
-
-AActor* AMyMinionLaneSuperCoreDawn::GetTargetActor() const
+AActor* AMyMinionLaneSiegeSkeleton::GetTargetActor() const
 {
 	AAIController* AIC = Cast<AAIController>(GetController());
 	if (ensure(AIC))
@@ -67,7 +57,16 @@ AActor* AMyMinionLaneSuperCoreDawn::GetTargetActor() const
 	return nullptr;
 }
 
-void AMyMinionLaneSuperCoreDawn::MyOnPawnSeen(APawn* Pawn)
+void AMyMinionLaneSiegeSkeleton::SetTargetActor(AActor* NewTargetActor) const
+{
+	AAIController* AIC = Cast<AAIController>(GetController());
+	if (ensure(AIC))
+	{
+		AIC->GetBlackboardComponent()->SetValueAsObject(TargetActorName, NewTargetActor);
+	}
+}
+
+void AMyMinionLaneSiegeSkeleton::MyOnPawnSeen(APawn* Pawn)
 {
 	if (GetTargetActor() != Pawn)
 	{
@@ -77,7 +76,7 @@ void AMyMinionLaneSuperCoreDawn::MyOnPawnSeen(APawn* Pawn)
 	}
 }
 
-void AMyMinionLaneSuperCoreDawn::OnHealthChanged(AActor* InstigatorActor, UMyAttributeComponent* OwningComp,
+void AMyMinionLaneSiegeSkeleton::OnHealthChanged(AActor* InstigatorActor, UMyAttributeComponent* OwningComp,
 	float NewHealth, float Delta)
 {
 	if (Delta < 0.0f)
@@ -124,3 +123,5 @@ void AMyMinionLaneSuperCoreDawn::OnHealthChanged(AActor* InstigatorActor, UMyAtt
 
 	}
 }
+
+
