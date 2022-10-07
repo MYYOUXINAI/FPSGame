@@ -42,7 +42,7 @@ protected:
 		TSubclassOf<UUserWidget>HealthBarWidgetClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-		float Yaw;
+		FVector LookAtLocation;
 
 	//Function
 	UFUNCTION()
@@ -60,9 +60,8 @@ protected:
 public:
 	virtual void PostInitializeComponents() override;
 
-	/* The Angle From self to Target Actor */
 	UFUNCTION(BlueprintCallable, Category = "MyTurretsAnimation")
-		float GetYaw()const;
+		FVector GetLookAtLocation()const;
 
 	virtual void Tick(float DeltaSeconds) override;
 };

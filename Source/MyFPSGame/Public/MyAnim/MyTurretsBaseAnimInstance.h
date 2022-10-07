@@ -17,8 +17,14 @@ class MYFPSGAME_API UMyTurretsBaseAnimInstance : public UAnimInstance
 		
 protected:
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MyAnimation")
+		bool bIsAttackState;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyAnimation")
 		float Yaw;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyAnimation")
+		FVector LookAtLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyAnimation")
 		bool OpenPanel;
@@ -63,5 +69,9 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	void FocusToTargetActorSmooth(float Delta, float NewYaw);
+
+	void EnterAttackState(bool bHasTargetActor);
+
+	void Fire(bool bEnterFireState);
 	
 };

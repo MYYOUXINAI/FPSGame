@@ -24,17 +24,19 @@ void UMyTurretsBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	float NewYaw = 0.0f;
+	if(OwningActor) LookAtLocation = OwningActor->GetLookAtLocation();
 
-	if (OwningActor)	NewYaw = OwningActor->GetYaw();
+	//float NewYaw = 0.0f;
 
-	NewYaw += 45;
-	if(NewYaw>180)
-	{
-		NewYaw -= 360;
-	}
+	//if (OwningActor)	NewYaw = OwningActor->GetYaw();
 
-	FocusToTargetActorSmooth(RotateDelta, NewYaw);
+	//NewYaw += 45;
+	//if(NewYaw>180)
+	//{
+	//	NewYaw -= 360;
+	//}
+
+	//FocusToTargetActorSmooth(RotateDelta, NewYaw);
 
 }
 
@@ -66,12 +68,37 @@ void UMyTurretsBaseAnimInstance::FocusToTargetActorSmooth(float Delta, float New
 		Yaw += Delta;
 	}
 
-	if(Yaw>180)
+	if(Yaw >180)
 	{
 		Yaw -= 360;
 	}
-	if(Yaw<-180)
+	if(Yaw <-180)
 	{
 		Yaw += 360;
 	}
+}
+
+void UMyTurretsBaseAnimInstance::EnterAttackState(bool bHasTargetActor)
+{
+	if (bHasTargetActor == bIsAttackState)	return;
+
+	bIsAttackState = bHasTargetActor;
+
+	OpenPanel = bIsAttackState;
+	Aiming = bIsAttackState;
+	OpenShield = bIsAttackState;
+
+	if(bHasTargetActor)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("True"));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("False"));
+	}
+}
+
+void UMyTurretsBaseAnimInstance::Fire(bool bEnterFireState)
+{
+	isFiring = bEnterFireState;
 }

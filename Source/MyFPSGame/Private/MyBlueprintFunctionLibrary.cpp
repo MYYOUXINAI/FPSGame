@@ -2,7 +2,10 @@
 
 
 #include "MyBlueprintFunctionLibrary.h"
+
+#include "AIController.h"
 #include "MyAttributeComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 
 bool UMyBlueprintFunctionLibrary::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount)
@@ -34,3 +37,23 @@ bool UMyBlueprintFunctionLibrary::ApplyDirectionalDamage(AActor* DamageCauser, A
 
 	return false;
 }
+
+bool UMyBlueprintFunctionLibrary::TurretGunFocusToTargetActor(APawn* OwnerPawn,
+	FName TargetActorName, FVector& LookAtLocation)
+{
+	if(ensure(OwnerPawn))
+	{
+		AAIController* AIC = Cast<AAIController>(OwnerPawn->GetController());
+		if(ensure(AIC))
+		{
+			AActor* TargetActor = Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject(TargetActorName));
+			if(TargetActor)
+			{
+				LookAtLocation = TargetActor->GetActorLocation() - OwnerPawn->GetActorLocation();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+

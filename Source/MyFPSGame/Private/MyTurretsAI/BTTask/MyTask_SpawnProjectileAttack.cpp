@@ -28,7 +28,7 @@ EBTNodeResult::Type UMyTask_SpawnProjectileAttack::ExecuteTask(UBehaviorTreeComp
 				if(ensure(_Action))
 				{
 					_Action->SetTargetActor(TargetActor);
-					const bool bFlag = UMyActionComponent::GetActionComponent(OwningCharacter)->StartActionByName(OwningCharacter, "MyTurretsPrimaryAttack");
+					const bool bFlag = UMyActionComponent::GetActionComponent(OwningCharacter)->StartActionByName(OwningCharacter, ActionName);
 					if(bFlag)
 					{
 						return EBTNodeResult::Succeeded;

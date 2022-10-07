@@ -2,13 +2,14 @@
 
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "MyAnim/MyTurretsBaseAnimInstance.h"
 
 UMyAction_TurretProjectileAttack::UMyAction_TurretProjectileAttack()
 {
 	HandSocketName = "Muzzle_01";
 
-	AttackAnimDelay = 0.2f;
-	AttackInterval = 1.0f;
+	AttackAnimDelay = 0.02f;
+	AttackInterval = 0.8f;
 }
 
 void UMyAction_TurretProjectileAttack::SetTargetActor(AActor* _TargetActor)
@@ -25,7 +26,12 @@ void UMyAction_TurretProjectileAttack::StartAction_Implementation(AActor* Instig
 	{
 		if(Character->HasAuthority())
 		{
-			UGameplayStatics::SpawnEmitterAttached(CastingEffect, Character->GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator);
+			UMyTurretsBaseAnimInstance* AnimInstance = Cast<UMyTurretsBaseAnimInstance>(Character->GetMesh()->GetAnimInstance());
+
+			if(ensure(AnimInstance))
+			{
+				AnimInstance->Fire(true);
+			}
 
 			FTimerHandle TimerHandle_AttackDelay;
 			FTimerDelegate AttackDelegate;
@@ -48,6 +54,14 @@ void UMyAction_TurretProjectileAttack::StartAction_Implementation(AActor* Instig
 void UMyAction_TurretProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorActor)
 {
 	ACharacter* OwningCharacter = InstigatorActor;
+
+	UMyTurretsBaseAnimInstance* AnimInstance = Cast<UMyTurretsBaseAnimInstance>(OwningCharacter->GetMesh()->GetAnimInstance());
+
+	if (ensure(AnimInstance))
+	{
+		AnimInstance->Fire(false);
+	}
+
 	if (ensure(OwningCharacter))
 	{
 		if (ensure(ProjectileClass))

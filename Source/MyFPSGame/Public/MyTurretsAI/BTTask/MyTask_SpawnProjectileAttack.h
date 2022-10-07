@@ -19,6 +19,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
 		FBlackboardKeySelector TargetActorKey;
 
+	UPROPERTY(EditAnywhere, Category = "AI")
+		FName ActionName;
+
 public:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 

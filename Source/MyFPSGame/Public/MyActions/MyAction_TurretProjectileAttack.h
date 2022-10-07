@@ -22,8 +22,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 		FName HandSocketName;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Effect")
-		UParticleSystem* CastingEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 		float AttackAnimDelay;

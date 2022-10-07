@@ -18,6 +18,8 @@
 
 AMyTurretBase::AMyTurretBase()
 {
+	
+
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 
 	AttributeComp = CreateDefaultSubobject<UMyAttributeComponent>("AttributeComp");
@@ -30,6 +32,9 @@ AMyTurretBase::AMyTurretBase()
 
 	TargetActorName = "TargetActor";
 
+	LookAtLocation = FVector(100, 0, 250);
+
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 
@@ -42,31 +47,20 @@ void AMyTurretBase::PostInitializeComponents()
 	AttributeComp->OnHealthChanged.AddDynamic(this, &AMyTurretBase::OnHealthChanged);
 }
 
-float AMyTurretBase::GetYaw() const
+FVector AMyTurretBase::GetLookAtLocation() const
 {
-	return Yaw;
+	return LookAtLocation;
 }
 
 void AMyTurretBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	AAIController* AIC = Cast<AAIController>(GetController());
-	if(AIC)
+	AActor* TargetActor = GetTargetActor();
+	if(TargetActor)
 	{
-		UBlackboardComponent* BlackboardComp = AIC->GetBlackboardComponent();
-		if(BlackboardComp)
-		{
-			AActor* TargetActor = Cast<AActor>(BlackboardComp->GetValueAsObject(TargetActorName));
-			if(TargetActor)
-			{
-				/* Update the Yaw */
-				float temp;
-				FVector TargetActorLocation = FVector(TargetActor->GetActorLocation().X, TargetActor->GetActorLocation().Y, GetActorLocation().Z);
-				FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetActorLocation);
-				UKismetMathLibrary::BreakRotator(Rotator,temp, temp, Yaw);
-			}
-		}
+		/* Update LookAt Location */
+		LookAtLocation = TargetActor->GetActorLocation();
 	}
 }
 
